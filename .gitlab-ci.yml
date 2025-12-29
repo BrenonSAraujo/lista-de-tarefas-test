@@ -1,0 +1,62 @@
+image: node:23.6.0
+
+stages:
+  - install
+  - lint
+  - test
+  - build
+
+variables:
+  NODE_ENV: test
+  npm_config_cache: "$CI_PROJECT_DIR/.npm"
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .npm/
+    - node_modules/
+
+install:
+  stage: install
+  script:
+    - npm ci
+  artifacts:
+    paths:
+      - node_modules/
+
+lint:
+  stage: lint
+  needs: ["install"]
+  script:
+    - npm run lint
+    - npm run format:check
+
+test:unit:
+  stage: test
+  needs: ["install"]
+  script:
+    - npm run test:unit
+
+test:integration:
+  stage: test
+  needs: ["install"]
+  script:
+    - npm run test:int
+
+test:e2e:
+  stage: test
+  needs: ["install"]
+  script:
+    - npx playwright install --with-deps
+    - npm run test:e2e
+
+build:
+  stage: build
+  needs:
+    - test:unit
+    - test:integration
+    - test:e2e
+  script:
+    - npm run build
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'

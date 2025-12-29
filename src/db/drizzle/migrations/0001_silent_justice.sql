@@ -1,0 +1,1 @@
+DROP INDEX `todo_description_unique`;
