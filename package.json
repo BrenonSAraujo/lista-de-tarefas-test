@@ -27,7 +27,14 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "format:fix": "prettier --write \"src/**/*.{js,ts,jsx,tsx,json,css,md}\"",
-    "format:check": "prettier --check \"src/**/*.{js,ts,jsx,tsx,json,css,md}\""
+    "format:check": "prettier --check \"src/**/*.{js,ts,jsx,tsx,json,css,md}\"",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "better-sqlite3": "^11.10.0",
@@ -63,7 +70,9 @@
     "eslint-config-next": "15.3.2",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.4.0",
+    "husky": "^9.1.7",
     "jsdom": "^26.1.0",
+    "lint-staged": "^16.2.7",
     "prettier": "^3.5.3",
     "storybook": "^8.6.14",
     "tailwindcss": "^4",
